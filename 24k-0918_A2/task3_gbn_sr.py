@@ -12,7 +12,6 @@ OWD_MS = RTT_MS / 2.0                   # 250 ms one way
 
 DATA, ACK = "DATA", "ACK"
 
-
 # ---------------- packets and checksum ----------------
 def checksum(kind, seq, payload):
     data = bytes([0 if kind == DATA else 1]) + seq.to_bytes(2, "big") + payload
@@ -24,20 +23,16 @@ def checksum(kind, seq, payload):
         s = (s & 0xFFFF) + (s >> 16)
     return (~s) & 0xFFFF
 
-
 def make_packet(kind, seq, payload, idx=None):
     # idx is only used for logging / forced loss, never by the protocol logic
     return {"kind": kind, "seq": seq, "payload": payload,
             "csum": checksum(kind, seq, payload), "idx": idx}
 
-
 def verify(pkt):
     return pkt["csum"] == checksum(pkt["kind"], pkt["seq"], pkt["payload"])
 
-
 def make_payload(idx):
     return idx.to_bytes(4, "big") + b"RESCUE-DATA"
-
 
 # ---------------- simulator core ----------------
 class Sim:
@@ -89,7 +84,6 @@ class Sim:
             self.stats["delayed"] += 1
             self.log(f"  CHANNEL  {tag} DELAYED by {extra:.0f} ms")
         self.schedule(self.t + OWD_MS + extra, dest_kind, dest, pkt)
-
 
 # ---------------- sender base ----------------
 class SenderBase:
@@ -145,7 +139,6 @@ class SenderBase:
         sim.log(f"SENDER   {word} pkt seq={seq} (#{idx})   {self.state()}")
         self.after_transmit(idx, is_rtx)
         sim.channel_send(pkt, "rx_data", self.receiver)
-
 
 # ---------------- Go-Back-N ----------------
 class GBNSender(SenderBase):
@@ -206,7 +199,6 @@ class GBNSender(SenderBase):
         self.rtx = deque(range(self.base, self.next))
         self.pump()
 
-
 class GBNReceiver:
     def __init__(self, sim):
         self.sim = sim
@@ -242,7 +234,6 @@ class GBNReceiver:
                     f"{self.expectedseqnum}) -> discarded")
             if self.have_any:
                 self.send_ack((self.expectedseqnum - 1) % self.M)
-
 
 # ---------------- Selective Repeat ----------------
 class SRSender(SenderBase):
@@ -302,7 +293,6 @@ class SRSender(SenderBase):
         sim.log(f"SENDER   TIMEOUT for #{idx} -> resend only this packet")
         self.rtx.append(idx)
         self.pump()
-
 
 class SRReceiver:
     def __init__(self, sim):
@@ -388,7 +378,6 @@ def run(a):
                            "corrupt_ack", "delayed")})
     return res
 
-
 def parse(argv=None):
     p = argparse.ArgumentParser(description="GBN / SR over an unreliable channel")
     p.add_argument("--protocol", choices=["gbn", "sr"], default="gbn")
@@ -405,7 +394,6 @@ def parse(argv=None):
                    "FIRST transmission is forcibly lost (for the Task 2 trace)")
     p.add_argument("--quiet", action="store_true", help="no per-event log")
     return p.parse_args(argv)
-
 
 def main():
     a = parse()
