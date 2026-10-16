@@ -1,7 +1,7 @@
 Roll No: 24K-0918  |  Seed: 918
 
 ## How to run
-    python3 gbn_sr.py --protocol gbn|sr [options]
+    python gbn_sr.py --protocol gbn|sr [options]
 
 | Parameter | Meaning | Default |
 |---|---|---|
