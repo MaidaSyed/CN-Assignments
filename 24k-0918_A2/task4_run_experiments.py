@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """Runs Task 4: A, B, C for GBN and SR (200 packets, N=4, k=3). Seed 918 = last 4 digits of 24K-0918."""
 import csv, statistics
 from types import SimpleNamespace
@@ -45,7 +45,7 @@ for r in rows: print(r)
 print()
 for r in avg: print(r)
 
-# graph
+## graph
 names = list(SCEN); short = ["A\nReliable", "B\nLoss 0.10", "C\nMixed errors"]
 def get(p, key): return [next(r[key] for r in rows if r["scenario"] == s and r["protocol"] == p) for s in names]
 fig, ax = plt.subplots(1, 3, figsize=(13, 4))
