@@ -1,0 +1,7 @@
+Scenario,Protocol,Avg transmitted,Avg retransmissions,Avg time (ms),Avg throughput (kbps),All correct
+A: Reliable,GBN,200,0,25012.0,63.97,True
+A: Reliable,SR,200,0,25012.0,63.97,True
+B: Loss 0.10,GBN,301.1,101.1,49398.0,32.9,True
+B: Loss 0.10,SR,252.8,52.8,46344.0,34.71,True
+C: Mixed (L.05/C.05/D.10),GBN,350.2,150.2,62136.0,26.07,True
+C: Mixed (L.05/C.05/D.10),SR,245.3,45.3,44460.0,36.19,True
